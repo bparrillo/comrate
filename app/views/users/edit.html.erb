@@ -1,0 +1,20 @@
+<h1>Editing User</h1>
+
+<!-- <%= render 'form', user: @user %> -->
+
+<%= link_to 'Show', @user %> |
+<%= link_to 'Back', users_path %>
+
+<%= form_for @user do |f| %>
+<p>
+  <%= f.label :username %> 
+  <%= f.text_field :username %>
+</p>
+<p>
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+</p>
+<p>
+  <%= f.submit %>
+</p>
+<% end %>

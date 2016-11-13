@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>Title: <%= @commercial.title %>
+</p>
+
+<p>
+Description: <%= @commercial.description %>
+  <ul class="listing">
+    <div class="row">
+        </div>
+</p>
+
+  <p>
+    <%= button_to "like", (@commercial.id).to_s + '/like', id: @commercial.id, method: :post%>
+  </p>
+  <p>
+    <%= button_to "dislike", (@commercial.id).to_s + '/dislike', id: @commercial.id, method: :post%>
+  </p>
+
+  <%= @commercial.total %>
+
+
+
+<%= link_to 'Edit', edit_commercial_path(@commercial) %> |
+<%= link_to 'Back', commercials_path %>
