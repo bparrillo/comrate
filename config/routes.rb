@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  #mount Thredded::Engine => '/forum'
   resources :commercials
   post 'commercials/:id/like', to: 'commercials#like'
   post 'commercials/:id/dislike', to: 'commercials#dislike'
