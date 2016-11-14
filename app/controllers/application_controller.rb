@@ -23,12 +23,11 @@ class ApplicationController < ActionController::Base
       redirect_to root_path
 
     end
-
   end
 
 
 
-  before_action :authorize
+  before_action :authorize 
   protected
   def authorize
     unless User.find_by(id: session[:user_id])

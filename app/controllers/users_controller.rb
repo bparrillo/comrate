@@ -66,7 +66,7 @@ class UsersController < ApplicationController
 
   private
     def verify_is_admin
-      if current_user.username=='bob'
+      if current_user && current_user.username =='bob'
         return
       else
         redirect_to commercials_path # or whatever
