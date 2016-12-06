@@ -1,4 +1,4 @@
-<%= form_for(commercial) do |f| %>
+<%= form_for(commercial, html: {multipart: true}) do |f| %>
   <% if commercial.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(commercial.errors.count, "error") %> prohibited this commercial from being saved:</h2>
@@ -22,7 +22,7 @@
   </p>
   <p>
     <%= f.label :video %>
-    <%= f.file_field :video %>
+    <%= f.file_field :video, class: "file-selector" %>
   </p>
   <%= @commercial.video %>
   <p>
