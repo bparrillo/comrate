@@ -12,6 +12,7 @@
   <tbody>
     <% @commercials.each do |commercial| %>
       <tr>
+        <td><%= commercial.title %></td>
         <td><%= link_to 'Show', commercial %></td>
         <td><%= link_to 'Edit', edit_commercial_path(commercial) %></td>
         <td><%= link_to 'Destroy', commercial, method: :delete, data: { confirm: 'Are you sure?' } %></td>
