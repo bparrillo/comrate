@@ -11,6 +11,12 @@ class CommercialsController < ApplicationController
     @commercials = Commercial.all
   end
 
+  def search
+    if !params[:search].nil?
+      @commercials = Commercial.search(params[:search])
+    end
+  end
+
   # GET /commercials/1
   # GET /commercials/1.json
   def show
@@ -108,6 +114,6 @@ class CommercialsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_params
       #params.fetch(:commercial, {})
-      params.require(:commercial).permit(:title, :description, :video)
+      params.require(:commercial).permit(:title, :description, :video, :search)
     end
 end

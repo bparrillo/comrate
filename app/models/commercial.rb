@@ -5,6 +5,12 @@ class Commercial < ApplicationRecord
   #validates :user_id, presence: true
   has_attached_file :video, processors: [:transcoder] #, default_url: "/images/:style/missing.png"
   do_not_validate_attachment_file_type :video # content_type: /.+/
+  def self.search(search)
+    if search
+      where("title LIKE ?", "%#{search}%")
+    end
+  end
+
   def total
     votes = self.votes
     sum = 0
