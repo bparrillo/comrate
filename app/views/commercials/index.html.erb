@@ -2,6 +2,13 @@
 
 <h1>Commercials</h1>
 
+<%= form_tag search_path, method: :get do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search" %>
+  </p>
+<% end %>
+
 <table>
   <thead>
     <tr>
@@ -12,6 +19,7 @@
   <tbody>
     <% @commercials.each do |commercial| %>
       <tr>
+        <td><%= commercial.title %></td>
         <td><%= link_to 'Show', commercial %></td>
         <td><%= link_to 'Edit', edit_commercial_path(commercial) %></td>
         <td><%= link_to 'Destroy', commercial, method: :delete, data: { confirm: 'Are you sure?' } %></td>

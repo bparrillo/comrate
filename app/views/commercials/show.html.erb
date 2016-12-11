@@ -10,6 +10,8 @@ Description: <%= @commercial.description %>
         </div>
 </p>
 
+<%= video_tag @commercial.video.url(:medium).sub!('medium', 'original') , controls: true, style: "max-width: 100%;" %>
+<%= @commercial.video.url(:medium).sub!('medium', 'original') %>
   <p>
     <%= button_to "like", (@commercial.id).to_s + '/like', id: @commercial.id, method: :post%>
   </p>
@@ -23,3 +25,5 @@ Description: <%= @commercial.description %>
 
 <%= link_to 'Edit', edit_commercial_path(@commercial) %> |
 <%= link_to 'Back', commercials_path %>
+
+

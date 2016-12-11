@@ -11,6 +11,12 @@ class CommercialsController < ApplicationController
     @commercials = Commercial.all
   end
 
+  def search
+    if !params[:search].nil?
+      @commercials = Commercial.search(params[:search])
+    end
+  end
+
   # GET /commercials/1
   # GET /commercials/1.json
   def show
@@ -45,6 +51,8 @@ class CommercialsController < ApplicationController
   # PATCH/PUT /commercials/1
   # PATCH/PUT /commercials/1.json
   def update
+    #vid_file = File.open(params[:commercial][:video],'wb')
+    #@commercial.update!(video: vid_file)
     respond_to do |format|
       if @commercial.update(commercial_params)
         format.html { redirect_to @commercial, notice: 'Commercial was successfully updated.' }
@@ -106,6 +114,6 @@ class CommercialsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_params
       #params.fetch(:commercial, {})
-      params.require(:commercial).permit(:title, :description)
+      params.require(:commercial).permit(:title, :description, :video, :search)
     end
 end

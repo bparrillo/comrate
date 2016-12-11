@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   post 'commercials/:id/dislike', to: 'commercials#dislike'
   resources :users
   get 'signup', to: 'users#new'
+
+  get 'search', to: 'commercials#search'
   
   resources :users, except: [:new]
   get 'login', to: 'sessions#new'
