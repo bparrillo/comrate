@@ -9,6 +9,14 @@ body {
 
 
 
-p {
-  color: blue
+.link:link {
+  color: red;
+}
+
+.link:visited {
+  color: red;
+}
+
+.total {
+  font-size: 40px;
 }

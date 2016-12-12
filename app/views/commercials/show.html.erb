@@ -10,20 +10,19 @@ Description: <%= @commercial.description %>
         </div>
 </p>
 
-<%= video_tag @commercial.video.url(:medium).sub!('medium', 'original') , controls: true, style: "max-width: 100%;" %>
+<%= video_tag @commercial.video.url(:medium).sub!('medium', 'original') , controls: true, style: "max-width: 50%;" %>
 <%= @commercial.video.url(:medium).sub!('medium', 'original') %>
-  <p>
-    <%= button_to "like", (@commercial.id).to_s + '/like', id: @commercial.id, method: :post%>
-  </p>
-  <p>
-    <%= button_to "dislike", (@commercial.id).to_s + '/dislike', id: @commercial.id, method: :post%>
-  </p>
+<p>
+  <%= button_to "like", (@commercial.id).to_s + '/like', id: @commercial.id, method: :post%>
+  <%= button_to "dislike", (@commercial.id).to_s + '/dislike', id: @commercial.id, method: :post%>
+</p>
 
+<p, class='total'>
   <%= @commercial.total %>
+</p>
 
 
-
-<%= link_to 'Edit', edit_commercial_path(@commercial) %> |
-<%= link_to 'Back', commercials_path %>
+<%= link_to 'Edit', edit_commercial_path(@commercial), {class: 'link'} %> |
+<%= link_to 'Back', commercials_path, {class: 'link'} %>
 
 
