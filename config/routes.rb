@@ -2,16 +2,13 @@ Rails.application.routes.draw do
   resources :commercials
   post 'commercials/:id/like', to: 'commercials#like'
   post 'commercials/:id/dislike', to: 'commercials#dislike'
-  resources :users
-  get 'signup', to: 'users#new'
-
   get 'search', to: 'commercials#search'
-  
+
+  get 'signup', to: 'users#new'
   resources :users, except: [:new]
+
   get 'login', to: 'sessions#new'
-
   post 'login', to: 'sessions#create'
-
   delete 'logout', to: 'sessions#destroy'
 
   root 'users#new'

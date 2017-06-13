@@ -47,7 +47,7 @@ RSpec.describe UsersController, type: :controller do
       it 'shows user' do
         session[:user_id] = 1
         get :show, id: 1
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(200)
         expect(subject.instance_variable_get(:@user)).to eq(user1)
       end
     end

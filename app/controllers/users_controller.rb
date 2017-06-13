@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    if session[:user_id] != params[:id]
+    if session[:user_id] != params[:id].to_i
       redirect_to commercials_path
     end
     @user = User.find(params[:id])
