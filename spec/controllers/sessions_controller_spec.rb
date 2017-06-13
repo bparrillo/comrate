@@ -4,7 +4,7 @@ RSpec.describe SessionsController, type: :controller do
 
   let!(:user2) {User.create(username: 'alice', password: 'blah1234')}
 
-  context 'new' do
+  context 'create' do
     it '' do
       post :create, params: { session: {username: "alice", password: "blah1234"}}
       expect(response).to have_http_status(302)

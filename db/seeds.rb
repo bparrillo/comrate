@@ -7,4 +7,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Commercial.create(title: "Beer master", description: "2000")
-User.create(username: 'bob', password: 'bob')
+User.create(username: 'bob@bob.com', password: 'bob')
