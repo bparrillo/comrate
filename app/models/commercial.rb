@@ -1,6 +1,6 @@
 class Commercial < ApplicationRecord
   has_many :votes
-  validates :title, presence: true, length: {minimum: 3, maximum: 50}
+  validates :title, presence: true, length: {minimum: 3, maximum: 20}
   validates :description, presence: true, length: {minimum: 3, maximum: 50}
   #validates :user_id, presence: true
   has_attached_file :video, processors: [:transcoder] #, default_url: "/images/:style/missing.png"

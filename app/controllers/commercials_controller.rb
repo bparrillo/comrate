@@ -1,8 +1,6 @@
 class CommercialsController < ApplicationController
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
 
-  #skip_before_filter :verify_authenticity_token
-
   def index
     @commercials = Commercial.all
   end
@@ -82,7 +80,6 @@ class CommercialsController < ApplicationController
   end
 
   private
-
     def get_vote
       current_item = Commercial.find(params[:id])
       @vote = current_item.votes.find_by_user_id(current_user.id)
