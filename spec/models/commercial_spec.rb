@@ -18,7 +18,7 @@ RSpec.describe Commercial, type: :model do
     it 'has no votes' do
       expect(commercial.total).to eq(0)
     end
-    
+
     let!(:user) {User.create(username: 'john', password: 'tasty1234')}
     let!(:vote) {Vote.create(:user_id => 1, :value => 1)}
 
