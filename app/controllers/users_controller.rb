@@ -3,14 +3,10 @@ class UsersController < ApplicationController
   skip_before_action :authorize, only: [:new,:create]
   before_filter :verify_is_admin, :only => [:index]
 
-  # GET /users
-  # GET /users.json
   def index
     @users = User.all
   end
 
-  # GET /users/1
-  # GET /users/1.json
   def show
     if session[:user_id] != params[:id].to_i
       redirect_to commercials_path
@@ -18,17 +14,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
   def edit
   end
 
-  # POST /users
-  # POST /users.json
   def create
     @user = User.new(user_params)
 
@@ -43,8 +35,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)
@@ -57,8 +47,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
     @user.destroy
     respond_to do |format|

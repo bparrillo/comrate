@@ -3,8 +3,6 @@ class CommercialsController < ApplicationController
 
   #skip_before_filter :verify_authenticity_token
 
-  # GET /commercials
-  # GET /commercials.json
   def index
     @commercials = Commercial.all
   end
@@ -15,23 +13,17 @@ class CommercialsController < ApplicationController
     end
   end
 
-  # GET /commercials/1
-  # GET /commercials/1.json
   def show
   end
 
-  # GET /commercials/new
   def new
     @commercial = Commercial.new
   end
 
-  # GET /commercials/1/edit
   def edit
     set_commercial
   end
 
-  # POST /commercials
-  # POST /commercials.json
   def create
     @commercial = Commercial.new(commercial_params)
     #@commercial.user= User.first
@@ -46,8 +38,6 @@ class CommercialsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /commercials/1
-  # PATCH/PUT /commercials/1.json
   def update
     #vid_file = File.open(params[:commercial][:video],'wb')
     #@commercial.update!(video: vid_file)
@@ -62,8 +52,6 @@ class CommercialsController < ApplicationController
     end
   end
 
-  # DELETE /commercials/1
-  # DELETE /commercials/1.json
   def destroy
     @commercial.destroy
     respond_to do |format|

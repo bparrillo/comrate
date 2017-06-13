@@ -11,12 +11,10 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
 
-
   protected
   def authorize
     unless User.find_by(id: session[:user_id])
       redirect_to login_url, notice: "lol"
     end
   end
-
 end
