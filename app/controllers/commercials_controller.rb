@@ -1,7 +1,5 @@
-#require_relative '../models/vote.rb'
 class CommercialsController < ApplicationController
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
-  before_action :authorize
 
   #skip_before_filter :verify_authenticity_token
 

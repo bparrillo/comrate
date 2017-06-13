@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  #protect_from_forgery with: :null_session
+  before_action :authorize
+  protect_from_forgery with: :null_session
   helper_method :current_user, :logged_in?
 
   def current_user
@@ -18,8 +19,6 @@ class ApplicationController < ActionController::Base
   end
 
 
-
-  before_action :authorize 
   protected
   def authorize
     unless User.find_by(id: session[:user_id])

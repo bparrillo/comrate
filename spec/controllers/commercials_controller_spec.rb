@@ -18,7 +18,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'search' do
-    it 'produces commericals under search criteria' do
+    it 'produces commercials under search criteria' do
       get :search, search: 'klon'
       expect(response).to have_http_status(200)
       expect(subject.instance_variable_get(:@commercials)).to eq([commercial1])
@@ -26,7 +26,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'show' do
-    it 'shows commerical' do
+    it 'shows commercial' do
       get :show, id: 1
       expect(response).to have_http_status(200)
       expect(subject.instance_variable_get(:@commercial)).to eq(commercial1)
@@ -34,7 +34,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'edit' do
-    it 'shows edit page for commerical' do
+    it 'shows edit page for commercial' do
       get :edit, id: 1
       expect(response).to have_http_status(200)
       expect(subject.instance_variable_get(:@commercial)).to eq(commercial1)
@@ -42,7 +42,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'create' do
-    it 'produces commerical' do
+    it 'produces commercial' do
       post :create, commercial: {title: 'rick and morty', description: 'funny'}
       expect(response).to have_http_status(302)
       expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'rick and morty'))
@@ -50,7 +50,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'create' do
-    it 'updates a commerical' do
+    it 'updates a commercial' do
       put :update, id:1, commercial: {title: 'subaru', description: 'car'}
       expect(response).to have_http_status(302)
       expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'subaru'))
@@ -58,7 +58,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'new' do
-    it 'renders commerical new template' do
+    it 'renders commercial new template' do
       get :new
       expect(response).to have_http_status(200)
       expect(subject.instance_variable_get(:@commercial)).to_not eq(nil)
@@ -66,7 +66,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'delete' do
-    it 'renders commerical new template' do
+    it 'renders commercial new template' do
       delete :destroy, id: 1
       expect(response).to have_http_status(302)
       expect{Commercial.find(1)}.to raise_error
@@ -76,7 +76,7 @@ RSpec.describe CommercialsController, type: :controller do
   context 'like' do
     let(:user) {User.create(password: '12345678', username: 'jim')}
 
-    it 'commerical gets positive vote' do
+    it 'commercial gets positive vote' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
       post :like, id: 1
       expect(response).to have_http_status(204)
@@ -87,7 +87,7 @@ RSpec.describe CommercialsController, type: :controller do
   context 'dislike' do
     let(:user) {User.create(password: '12345678', username: 'jim')}
 
-    it 'commerical gets positive vote' do
+    it 'commercial gets positive vote' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
       post :dislike, id: 1
       expect(response).to have_http_status(204)

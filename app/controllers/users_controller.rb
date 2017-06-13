@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authorize, only: [:new,:create,:index]
+  skip_before_action :authorize, only: [:new,:create]
   before_filter :verify_is_admin, :only => [:index]
 
   # GET /users
@@ -12,6 +12,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    if session[:user_id] != params[:id]
+      redirect_to commercials_path
+    end
     @user = User.find(params[:id])
   end
 
