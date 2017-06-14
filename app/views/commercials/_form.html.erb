@@ -13,7 +13,6 @@
 
   <%= form_for @commercial, html: {multipart: true} do |f| %>
     <%= hidden_field_tag 'user', @user %>
-    <%= binding.pry %>
     <p>
       <%= f.label :title %> 
       <%= f.text_field :title %>
