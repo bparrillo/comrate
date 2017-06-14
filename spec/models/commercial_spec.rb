@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Commercial, type: :model do
 
-  let!(:commercial) {Commercial.create(title: 'klondike', description: 'tasty')}
+  let(:creator) {User.create(password: '12345678', username: 'company')}
+  let!(:commercial) {Commercial.create(title: 'klondike', description: 'tasty', user: creator)}
   
   context 'search' do
     it 'returns something' do

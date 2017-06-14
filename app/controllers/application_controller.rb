@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :authorize
+  before_action :authenticate
   protect_from_forgery with: :null_session
   helper_method :current_user, :logged_in?
 
@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-  def authorize
+  def authenticate
     unless User.find_by(id: session[:user_id])
       redirect_to login_url, notice: "lol"
     end

@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20161204030259) do
     t.datetime "updated_at",         null: false
     t.string   "title"
     t.text     "description"
+    t.integer  "user_id"
     t.string   "video_file_name"
     t.string   "video_content_type"
     t.integer  "video_file_size"

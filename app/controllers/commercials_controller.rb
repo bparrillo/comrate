@@ -15,15 +15,18 @@ class CommercialsController < ApplicationController
   end
 
   def new
+    @user=current_user
     @commercial = Commercial.new
   end
 
   def edit
+    @user=current_user
     set_commercial
   end
 
   def create
     @commercial = Commercial.new(commercial_params)
+    @commercial.user = current_user
     #@commercial.user= User.first
     respond_to do |format|
       if @commercial.save

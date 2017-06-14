@@ -14,7 +14,7 @@ RSpec.describe UsersController, type: :controller do
 
   context 'without admin' do
     it 'does not show index page' do
-      subject.class.skip_before_action :authorize, raise: false
+      subject.class.skip_before_action :authenticate, raise: false
       get :index, params: {id: 1}
       expect(response).to have_http_status(302)
     end
@@ -23,7 +23,7 @@ RSpec.describe UsersController, type: :controller do
   context 'user logged in' do
 
     before :each do
-      subject.class.skip_before_action :authorize, raise: false
+      subject.class.skip_before_action :authenticate, raise: false
       subject.class.skip_before_action :verify_is_admin, raise: false
     end
 
