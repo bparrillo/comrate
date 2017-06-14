@@ -60,7 +60,6 @@ class CommercialsController < ApplicationController
 
 
   def like
-    binding.pry
     vote = get_vote
     vote.value = 1 unless vote.value == 1
     vote.save
