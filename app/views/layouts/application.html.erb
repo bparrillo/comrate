@@ -6,6 +6,8 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= !!current_user ? link_to('Sign Out', logout_path, method: :delete) : "" %>
+    <%= !current_user ? link_to('Sign Up', signup_path) : "" %>
   </head>
 
   <body>
