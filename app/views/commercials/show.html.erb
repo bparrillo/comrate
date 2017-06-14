@@ -13,10 +13,10 @@ Description: <%= @commercial.description %>
 <%= video_tag @commercial.video.url(:medium).sub!('medium', 'original') , controls: true, style: "max-width: 100%;" %>
 <%= @commercial.video.url(:medium).sub!('medium', 'original') %>
   <p>
-    <%= button_to "like", (@commercial.id).to_s + '/like', id: @commercial.id, method: :post%>
+    <%= link_to "like", (@commercial.id).to_s + '/like', id: @commercial.id, method: :post%>
   </p>
   <p>
-    <%= button_to "dislike", (@commercial.id).to_s + '/dislike', id: @commercial.id, method: :post%>
+    <%= link_to "dislike", (@commercial.id).to_s + '/dislike', id: @commercial.id, method: :post%>
   </p>
 
   <%= @commercial.total %>

@@ -10,7 +10,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'index' do
-    it 'returns all commerials' do
+    it 'returns all commercials' do
       get :index
       expect(response).to have_http_status(200)
       expect(subject.instance_variable_get(:@commercials)).to eq([commercial1,commercial2])
@@ -86,6 +86,7 @@ RSpec.describe CommercialsController, type: :controller do
 
   context 'dislike' do
     let(:user) {User.create(password: '12345678', username: 'jim')}
+    let!(:vote) {Vote.create(:user_id => 1, :value => 1)}
 
     it 'commercial gets positive vote' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
