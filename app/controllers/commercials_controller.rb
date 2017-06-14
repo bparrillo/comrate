@@ -27,7 +27,6 @@ class CommercialsController < ApplicationController
   def create
     @commercial = Commercial.new(commercial_params)
     @commercial.user = current_user
-    #@commercial.user= User.first
     respond_to do |format|
       if @commercial.save
         format.html { redirect_to @commercial, notice: 'Commercial was successfully created.' }
@@ -43,7 +42,7 @@ class CommercialsController < ApplicationController
     #vid_file = File.open(params[:commercial][:video],'wb')
     #@commercial.update!(video: vid_file)
     respond_to do |format|
-      if @commercial.update(commercial_params)
+      if @commercial.update!(commercial_params.merge({user: current_user}))
         format.html { redirect_to @commercial, notice: 'Commercial was successfully updated.' }
         format.json { render :show, status: :ok, location: @commercial }
       else

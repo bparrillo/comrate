@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
-  let!(:user1) {User.create(username: 'john', password: 'tasty1234')}
-  let!(:user2) {User.create(username: 'alice', password: 'blah1234')}
+  let!(:user1) {User.create(username: 'john', password: 'tasty1234', email: "lala@la.com")}
+  let!(:user2) {User.create(username: 'alice', password: 'blah1234', email: 'blast@x.com')}
 
   context 'without login' do
     it 'does not show user' do
@@ -62,9 +62,9 @@ RSpec.describe UsersController, type: :controller do
 
     context 'create' do
       it 'produces user' do
-        post :create, params: {user: {username: 'rick and morty', password: 'funny'}}
+        post :create, params: {user: {username: 'rick morty', password: 'funnyabc123!', email: 'sheeet@shit.x'}}
         expect(response).to have_http_status(302)
-        expect(subject.instance_variable_get(:@user)).to eq(User.find_by(username: 'rick and morty'))
+        expect(subject.instance_variable_get(:@user)).to eq(User.find_by(username: 'rick morty'))
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe UsersController, type: :controller do
 
   context 'create' do
     it 'updates a user' do
-      put :update, params: {id:1, user: {username: 'subaru', password: 'car'}}
+      put :update, params: {id:1, user: {username: 'subaru', password: 'funnyabc123'}}
       expect(response).to have_http_status(302)
       expect(subject.instance_variable_get(:@user)).to eq(User.find_by(username: 'subaru'))
     end

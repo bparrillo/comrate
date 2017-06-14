@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem "paperclip", "~> 5.0.0"
 gem 'paperclip-av-transcoder'
 gem 'bcrypt', '~> 3.1.7'
+gem 'devise'
 #gem "paperclip-ffmpeg", "~> 1.2.0"
 
 

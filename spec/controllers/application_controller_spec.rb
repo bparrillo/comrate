@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ApplicationController, type: :controller do
 
-  let!(:user) {User.create(username: 'alice', password: 'blah1234')}
+  let!(:user) {User.create(username: 'alice', password: 'blah1234', email: 'la@di.da')}
 
   context 'current_user' do
     it 'has session' do

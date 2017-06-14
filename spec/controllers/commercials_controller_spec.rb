@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe CommercialsController, type: :controller do
 
-  let(:creator) {User.create(password: '12345678', username: 'company')}
+  let(:creator) {User.create(password: '12345678', username: 'company', password: 'funnyabc123')}
   let!(:commercial1) {Commercial.create(title: 'klondike', description: 'tasty', user: creator)}
   let!(:commercial2) {Commercial.create(title: 'old spice', description: 'blah', user: creator)}
   
   before(:each) do
     subject.class.skip_before_action :authenticate, raise: false
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(creator)
   end
 
   context 'index' do
@@ -44,7 +45,6 @@ RSpec.describe CommercialsController, type: :controller do
 
   context 'create' do
     it 'produces commercial' do
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(creator)
       post :create, params: {commercial: {title: 'rick and morty', description: 'funny'}}
       expect(response).to have_http_status(302)
       expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'rick and morty'))
@@ -53,7 +53,7 @@ RSpec.describe CommercialsController, type: :controller do
 
   context 'update' do
     it 'updates a commercial' do
-      put :update, params: {id:1, commercial: {title: 'subaru', description: 'car'}}
+      put :update, params: {id:1, commercial: {title: 'subaru', description: 'car', user: creator} }
       expect(response).to have_http_status(302)
       expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'subaru'))
     end
@@ -76,7 +76,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'like' do
-    let(:user) {User.create(password: '12345678', username: 'jim')}
+    let(:user) {User.create(password: '12345678', username: 'jim', email: 'x@x.x')}
 
     it 'commercial gets positive vote' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
@@ -87,7 +87,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'dislike' do
-    let(:user) {User.create(password: '12345678', username: 'jim')}
+    let(:user) {User.create(password: '12345678', username: 'jim', email: 'x@x.x')}
     let!(:vote) {Vote.create(:user_id => 1, :value => 1)}
 
     it 'commercial gets positive vote' do
