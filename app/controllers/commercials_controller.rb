@@ -1,12 +1,6 @@
-#require_relative '../models/vote.rb'
 class CommercialsController < ApplicationController
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
-  before_filter :authorize
 
-  #skip_before_filter :verify_authenticity_token
-
-  # GET /commercials
-  # GET /commercials.json
   def index
     @commercials = Commercial.all
   end
@@ -17,25 +11,22 @@ class CommercialsController < ApplicationController
     end
   end
 
-  # GET /commercials/1
-  # GET /commercials/1.json
   def show
   end
 
-  # GET /commercials/new
   def new
+    @user=current_user
     @commercial = Commercial.new
   end
 
-  # GET /commercials/1/edit
   def edit
+    @user=current_user
     set_commercial
   end
 
-  # POST /commercials
-  # POST /commercials.json
   def create
     @commercial = Commercial.new(commercial_params)
+    @commercial.user = current_user
     #@commercial.user= User.first
     respond_to do |format|
       if @commercial.save
@@ -48,8 +39,6 @@ class CommercialsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /commercials/1
-  # PATCH/PUT /commercials/1.json
   def update
     #vid_file = File.open(params[:commercial][:video],'wb')
     #@commercial.update!(video: vid_file)
@@ -64,8 +53,6 @@ class CommercialsController < ApplicationController
     end
   end
 
-  # DELETE /commercials/1
-  # DELETE /commercials/1.json
   def destroy
     @commercial.destroy
     respond_to do |format|
@@ -76,9 +63,9 @@ class CommercialsController < ApplicationController
 
 
   def like
-    get_vote
-    @vote.value = 1 unless @vote.value == 1
-    @vote.save
+    vote = get_vote
+    vote.value = 1 unless vote.value == 1
+    vote.save
     respond_to do |format|
       format.html
       format.js 
@@ -86,9 +73,9 @@ class CommercialsController < ApplicationController
   end
 
   def dislike
-    get_vote
-    @vote.value = -1 unless @vote.value == -1
-    @vote.save
+    vote = get_vote
+    vote.value = -1 unless vote.value == -1
+    vote.save
     respond_to do |format|
       format.html
       format.js 
@@ -96,14 +83,14 @@ class CommercialsController < ApplicationController
   end
 
   private
-
     def get_vote
       current_item = Commercial.find(params[:id])
-      @vote = current_item.votes.find_by_user_id(current_user.id)
-      unless @vote
-        @vote = Vote.create(:user_id => current_user.id, :value => 0)
-        current_item.votes << @vote
+      vote = current_item.votes.find_by_user_id(current_user.id)
+      unless vote
+        vote = Vote.create(:user_id => current_user.id, :value => 0)
+        current_item.votes << vote
       end
+      vote
     end
 
     # Use callbacks to share common setup or constraints between actions.
