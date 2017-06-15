@@ -5,14 +5,7 @@ Rails.application.routes.draw do
   post 'commercials/:id/dislike', to: 'commercials#dislike'
   get 'search', to: 'commercials#search'
 
-  get 'signup', to: 'users#new'
-  resources :users, except: [:new]
-
-  get 'login', to: 'sessions#new'
-  post 'login', to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy'
-
-  root 'sessions#new'
+  root 'home#home'
 
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

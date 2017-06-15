@@ -1,4 +1,5 @@
 class CommercialsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
 
   def index

@@ -7,8 +7,9 @@ RSpec.describe CommercialsController, type: :controller do
   let!(:commercial2) {Commercial.create(title: 'old spice', description: 'blah', user: creator)}
   
   before(:each) do
-    subject.class.skip_before_action :authenticate, raise: false
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(creator)
+  user = creator
+  allow(request.env['warden']).to receive(:authenticate!).and_return(user)
+  allow(controller).to receive(:current_user).and_return(user)
   end
 
   context 'index' do
