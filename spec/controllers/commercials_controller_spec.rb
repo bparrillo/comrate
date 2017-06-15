@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CommercialsController, type: :controller do
 
-  let(:creator) {User.create(password: '12345678', username: 'company', password: 'funnyabc123')}
+  let(:creator) {User.create(password: '12345678', password: 'funnyabc123')}
   let!(:commercial1) {Commercial.create(title: 'klondike', description: 'tasty', user: creator)}
   let!(:commercial2) {Commercial.create(title: 'old spice', description: 'blah', user: creator)}
   
@@ -77,7 +77,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'like' do
-    let(:user) {User.create(password: '12345678', username: 'jim', email: 'x@x.x')}
+    let(:user) {User.create(password: '12345678', email: 'x@x.x')}
 
     it 'commercial gets positive vote' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
@@ -88,7 +88,7 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'dislike' do
-    let(:user) {User.create(password: '12345678', username: 'jim', email: 'x@x.x')}
+    let(:user) {User.create(password: '12345678', email: 'x@x.x')}
     let!(:vote) {Vote.create(:user_id => 1, :value => 1)}
 
     it 'commercial gets positive vote' do
