@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Commercial, type: :model do
 
-  let(:creator) {User.create(password: '12345678', username: 'company')}
+  let(:creator) {User.create(password: '12345678')}
   let!(:commercial) {Commercial.create(title: 'klondike', description: 'tasty', user: creator)}
   
   context 'search' do
@@ -20,7 +20,7 @@ RSpec.describe Commercial, type: :model do
       expect(commercial.total).to eq(0)
     end
 
-    let!(:user) {User.create(username: 'john', password: 'tasty1234')}
+    let!(:user) {User.create(password: 'tasty1234')}
     let!(:vote) {Vote.create(:user_id => 1, :value => 1)}
 
     it 'returns []' do
