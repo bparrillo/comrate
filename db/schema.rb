@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614193510) do
+ActiveRecord::Schema.define(version: 20170618145613) do
+
+  create_table "com_payments", force: :cascade do |t|
+    t.string   "card_type"
+    t.string   "number"
+    t.string   "expire_month"
+    t.string   "expire_year"
+    t.string   "cvv2"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "postal_code"
+    t.string   "country_code"
+    t.integer  "commercial_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "commercials", force: :cascade do |t|
     t.datetime "created_at",         null: false

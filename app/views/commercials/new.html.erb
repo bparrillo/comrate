@@ -1,5 +1,38 @@
 <h1>New Commercial</h1>
 
-<%= render 'form', commercial: @commercial %>
+<%= form_for @commercial, html: {multipart: true} do |f| %>
+  <%= hidden_field_tag 'user', @user %>
+  <p>
+    <%= f.label :title %> 
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :video %>
+    <%= f.file_field :video, class: "file-selector" %>
+  </p>
+  <%= f.fields_for :com_payment do |pay_fields| %>
+    type: <%= pay_fields.text_field  :card_type %><br />
+    number: <%= pay_fields.text_field  :number %><br />
+    expire_month: <%= pay_fields.text_field  :expire_month %><br />
+    expire_year: <%= pay_fields.text_field :expire_year %><br />
+    cvv2: <%= pay_fields.text_field  :cvv2 %><br />
+    first_name: <%= pay_fields.text_field  :first_name %><br />
+    last_name: <%= pay_fields.text_field  :last_name %><br />
+    address: <%= pay_fields.text_field  :address %><br />
+    city: <%= pay_fields.text_field  :city %><br />
+    state: <%= pay_fields.text_field  :state %><br />
+    postal_code: <%= pay_fields.text_field  :postal_code %><br />
+    country_code: <%= pay_fields.text_field  :country_code %><br />
+
+  <% end %>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
 
 <%= link_to 'Back', commercials_path %>

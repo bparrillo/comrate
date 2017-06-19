@@ -1,3 +1,4 @@
+include PayPal::SDK::REST
 class CommercialsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
@@ -25,14 +26,53 @@ class CommercialsController < ApplicationController
     set_commercial
   end
 
+  def pay
+    payInfo=params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    payInfo[:type]=payInfo.delete(:card_type)
+    # Build Payment object
+    @payment = Payment.new({
+      :intent => "sale",
+      :payer => {
+        :payment_method => "credit_card",
+        :funding_instruments => [{
+          :credit_card => payInfo
+              }]},
+      :transactions => [{
+        :item_list => {
+          :items => [{
+            :name => "commercial",
+            :sku => "item",
+            :price => "10",
+            :currency => "USD",
+            :quantity => 1 }]},
+        :amount => {
+          :total => "10.00",
+          :currency => "USD" },
+        :description => "User now can post a video on my website." }]})
+
+    # Create Payment and return the status(true or false)
+    if @payment.create
+      # binding.pry
+      payInfo[:card_type]=payInfo.delete(:type)
+      ComPayment.new(params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}) # Payment Id
+    else
+      false  # Error Hash
+    end
+  end
+
   def create
     @commercial = Commercial.new(commercial_params)
+    payment = pay
     @commercial.user = current_user
     respond_to do |format|
-      if @commercial.save
+      if !payment
+        format.html { render :new, notice: 'Payment failed.' }
+        format.json { render json: @commercial.errors, status: :payment_failed }
+      elsif (@commercial.save && payment.update(commercial: @commercial) && payment.save)
         format.html { redirect_to @commercial, notice: 'Commercial was successfully created.' }
         format.json { render :show, status: :created, location: @commercial }
       else
+        binding.pry
         format.html { render :new }
         format.json { render json: @commercial.errors, status: :unprocessable_entity }
       end
@@ -101,6 +141,14 @@ class CommercialsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_params
       #params.fetch(:commercial, {})
-      params.require(:commercial).permit(:title, :description, :video, :search)
+      params.require(:commercial).permit(
+        :title,
+        :description,
+        :video,
+        :search,
+        com_payment_attributes: [
+          :type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name
+          ]
+        )
     end
 end
