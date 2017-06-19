@@ -29,20 +29,8 @@ class CommercialsController < ApplicationController
 
   def create
     @commercial = Commercial.new(commercial_params)
-    payment = pay
     @commercial.user = current_user
-    respond_to do |format|
-      if !payment
-        format.html { render :new, notice: 'Payment failed.' }
-        format.json { render json: @commercial.errors, status: :payment_failed }
-      elsif (@commercial.save && payment.update(commercial: @commercial) && payment.save)
-        format.html { redirect_to @commercial, notice: 'Commercial was successfully created.' }
-        format.json { render :show, status: :created, location: @commercial }
-      else
-        format.html { render :new }
-        format.json { render json: @commercial.errors, status: :unprocessable_entity }
-      end
-    end
+    pay
   end
 
   def update
@@ -111,14 +99,31 @@ class CommercialsController < ApplicationController
           :amount => {
             :total => "10.00",
             :currency => "USD" },
-          :description => "User now can post a video on my website." }]})
+          :description => "User now can post a video on website." }]})
 
       # Create Payment and return the status(true or false)
-      if @payment.create
-        payInfo[:card_type]=payInfo.delete(:type)
-        ComPayment.new(params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}) # Payment Id
-      else
-        false  # Error Hash
+      respond_to do |format|
+        if @payment.create
+          payInfo[:card_type]=payInfo.delete(:type)
+          payment = ComPayment.new(params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}) # Payment Id
+          
+          if (@commercial.save && payment.update(commercial: @commercial) && payment.save)
+            format.html { redirect_to @commercial, notice: 'Commercial was successfully created.' }
+            format.json { render :show, status: :created, location: @commercial }
+          elsif !@commercial.save
+            format.html { render :new }
+            format.json { render json: @commercial.errors, status: :unprocessable_entity }
+          elsif !payment.update(commercial: @commercial) 
+            format.html { render :new }
+            format.json { render json: { "message" => "association failed"}, status: :unprocessable_entity }
+          else
+            format.html { render :new }
+            format.json { render json: payment.errors, status: :unprocessable_entity }
+          end
+        else
+          format.html { render :new, notice: 'Payment failed.' }
+          format.json { render json: @payment.errors, status: :payment_failed }
+        end
       end
     end
 
@@ -140,7 +145,7 @@ class CommercialsController < ApplicationController
     def pay_params
       begin
         params[:commercial][:com_payment].require(
-            :card_type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name)
+            [:card_type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name, :address, :city, :state,:postal_code,:country_code])
       rescue
         flash[:notice] = "missing fields"
         redirect_to action: "new"
@@ -156,7 +161,7 @@ class CommercialsController < ApplicationController
         :video,
         :search,
         com_payment_attributes: [
-          :type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name
+          :card_type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name, :address, :city, :state,:postal_code,:country_code
           ]
         )
     end
