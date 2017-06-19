@@ -7,9 +7,9 @@ RSpec.describe CommercialsController, type: :controller do
   let!(:commercial2) {Commercial.create(title: 'old spice', description: 'blah', user: creator)}
   
   before(:each) do
-  user = creator
-  allow(request.env['warden']).to receive(:authenticate!).and_return(user)
-  allow(controller).to receive(:current_user).and_return(user)
+    user = creator
+    allow(request.env['warden']).to receive(:authenticate!).and_return(user)
+    allow(controller).to receive(:current_user).and_return(user)
   end
 
   context 'index' do
@@ -45,12 +45,41 @@ RSpec.describe CommercialsController, type: :controller do
   end
 
   context 'create' do
+    let(:payment_mock) { {create: true} }
+    
     it 'produces commercial' do
+      allow(PayPal::SDK::REST::DataTypes::Payment).to receive(:new).and_return(double(payment_mock))
+      payment = 
+        { type: "visa",
+          number: "4567516310777851",
+          expire_month: "11",
+          expire_year: "2018",
+          cvv2: "874",
+          first_name: "Joe",
+          last_name: "Shopper",
+          address: "52 N Main ST",
+          city: "Johnstown",
+          state: "OH",
+          postal_code: "43210",
+          country_code: "US" }
+      post :create, params: {commercial: {title: 'rick and morty', description: 'funny', com_payment: payment}}
+      expect(response).to have_http_status(302)
+      expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'rick and morty'))
+    end
+
+    it 'fails: missing pay info' do
+      post :create, params: {commercial: {title: 'rick and morty', description: 'funny', com_payment: ""}}
+      expect(response).to have_http_status(302)
+      expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'rick and morty'))
+    end
+
+    it 'fails: missing pay info' do
       post :create, params: {commercial: {title: 'rick and morty', description: 'funny'}}
       expect(response).to have_http_status(302)
       expect(subject.instance_variable_get(:@commercial)).to eq(Commercial.find_by(title: 'rick and morty'))
     end
   end
+
 
   context 'update' do
     it 'updates a commercial' do

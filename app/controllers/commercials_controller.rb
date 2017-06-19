@@ -1,6 +1,8 @@
+include PayPal::SDK::REST
 class CommercialsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
+  before_action :pay_params, only: [:create]
 
   def index
     @commercials = Commercial.all
@@ -28,15 +30,7 @@ class CommercialsController < ApplicationController
   def create
     @commercial = Commercial.new(commercial_params)
     @commercial.user = current_user
-    respond_to do |format|
-      if @commercial.save
-        format.html { redirect_to @commercial, notice: 'Commercial was successfully created.' }
-        format.json { render :show, status: :created, location: @commercial }
-      else
-        format.html { render :new }
-        format.json { render json: @commercial.errors, status: :unprocessable_entity }
-      end
-    end
+    pay
   end
 
   def update
@@ -83,6 +77,56 @@ class CommercialsController < ApplicationController
   end
 
   private
+    def pay
+      payInfo=params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+      payInfo[:type]=payInfo.delete(:card_type)
+      # Build Payment object
+      @payment = Payment.new({
+        :intent => "sale",
+        :payer => {
+          :payment_method => "credit_card",
+          :funding_instruments => [{
+            :credit_card => payInfo
+                }]},
+        :transactions => [{
+          :item_list => {
+            :items => [{
+              :name => "commercial",
+              :sku => "item",
+              :price => "10",
+              :currency => "USD",
+              :quantity => 1 }]},
+          :amount => {
+            :total => "10.00",
+            :currency => "USD" },
+          :description => "User now can post a video on website." }]})
+
+      # Create Payment and return the status(true or false)
+      respond_to do |format|
+        if @payment.create
+          payInfo[:card_type]=payInfo.delete(:type)
+          payment = ComPayment.new(params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}) # Payment Id
+          
+          if (@commercial.save && payment.update(commercial: @commercial) && payment.save)
+            format.html { redirect_to @commercial, notice: 'Commercial was successfully created.' }
+            format.json { render :show, status: :created, location: @commercial }
+          elsif !@commercial.save
+            format.html { render :new }
+            format.json { render json: @commercial.errors, status: :unprocessable_entity }
+          elsif !payment.update(commercial: @commercial) 
+            format.html { render :new }
+            format.json { render json: { "message" => "association failed"}, status: :unprocessable_entity }
+          else
+            format.html { render :new }
+            format.json { render json: payment.errors, status: :unprocessable_entity }
+          end
+        else
+          format.html { render :new, notice: 'Payment failed.' }
+          format.json { render json: @payment.errors, status: :payment_failed }
+        end
+      end
+    end
+
     def get_vote
       current_item = Commercial.find(params[:id])
       vote = current_item.votes.find_by_user_id(current_user.id)
@@ -98,9 +142,27 @@ class CommercialsController < ApplicationController
       @commercial = Commercial.find(params[:id])
     end
 
+    def pay_params
+      begin
+        params[:commercial][:com_payment].require(
+            [:card_type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name, :address, :city, :state,:postal_code,:country_code])
+      rescue
+        flash[:notice] = "missing fields"
+        redirect_to action: "new"
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_params
       #params.fetch(:commercial, {})
-      params.require(:commercial).permit(:title, :description, :video, :search)
+      params.require(:commercial).permit(
+        :title,
+        :description,
+        :video,
+        :search,
+        com_payment_attributes: [
+          :card_type, :number, :expire_month, :expire_year, :cvv2, :first_name, :last_name, :address, :city, :state,:postal_code,:country_code
+          ]
+        )
     end
 end
