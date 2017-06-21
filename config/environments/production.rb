@@ -1,4 +1,8 @@
 Rails.application.configure do
+
+  config.static_cache_control = 'public, s-maxage=2592000, max-age=86400'
+  config.serve_static_assets = true
+  config.action_controller.asset_host = ENV['FASTLY_CDN_URL']
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
