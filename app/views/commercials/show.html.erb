@@ -18,11 +18,6 @@ Description: <%= @commercial.description %>
     <%= link_to "dislike", (@commercial.id).to_s + '/dislike', id: @commercial.id, method: :post%>
   </p>
 
-  <%= @commercial.total %>
-
-
-
-<%= link_to 'Edit', edit_commercial_path(@commercial) %>
-<%= link_to 'Back', commercials_path %>
+<%= link_to "back to listing", commercials_path %>
 
 
