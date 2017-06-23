@@ -1,0 +1,26 @@
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li>
+    <% if 0 < @page_num.to_i-1 %>
+      <li>
+        <%= link_to cur_path.(page_num: @page_num.to_i-1), "aria-label" => "Previous" do %>
+          <span aria-hidden="true">&laquo;</span>
+        <% end %>
+      </li>
+    <% else %>
+    <% end %>
+    </li>
+    <li><%= link_to @page_num, cur_path.(page_num: @page_num.to_i) %></li>
+    <li><%= (com_count >= @page_num.to_i+1) ? link_to(@page_num.to_i+1 , cur_path.(page_num: @page_num.to_i+1 )) : "" %></li>
+    <li><%= (com_count >= @page_num.to_i+2) ? link_to(@page_num.to_i+2 , cur_path.(page_num: @page_num.to_i+2 )) : "" %></li>
+    <li><%= (com_count >= @page_num.to_i+3) ? link_to(@page_num.to_i+3 , cur_path.(page_num: @page_num.to_i+3 )) : "" %></li>
+    <% if com_count > @page_num.to_i+3 %>
+      <li>
+        <%= link_to cur_path.(page_num: @page_num.to_i+4), "aria-label" => "Next" do %>
+          <span aria-hidden="true">&raquo;</span>
+        <% end %>
+      </li>
+    <% else %>
+    <% end %>
+  </ul>
+</nav>

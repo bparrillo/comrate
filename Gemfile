@@ -8,6 +8,7 @@ gem 'devise'
 gem 'paypal-sdk-rest'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem "fastly-rails"
+gem 'kaminari'
 #gem "paperclip-ffmpeg", "~> 1.2.0"
 
 

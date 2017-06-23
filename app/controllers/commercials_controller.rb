@@ -3,18 +3,24 @@ class CommercialsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
   before_action :pay_params, only: [:create]
+  before_action :page_default, only: [:index, :search, :my]
+
+
 
   def my
-    @commercials = Commercial.where :user_id => current_user.id
+    @commercials = Commercial.where(user_id: current_user.id).page(params[:page_num])
   end
 
   def index
-    @commercials = Commercial.all
+    @commercials = Commercial.page(params[:page_num])
   end
 
   def search
     if !params[:search].nil?
-      @commercials = Commercial.search(params[:search])
+      @search=params[:search]
+      @commercials = Commercial.search(params[:search]).page(params[:page_num])
+    else
+      @commercials=[]
     end
   end
 
@@ -81,6 +87,15 @@ class CommercialsController < ApplicationController
   end
 
   private
+
+    def page_default
+      if params[:page_num].nil?
+        @page_num=1
+      else
+        @page_num=params[:page_num]
+      end
+    end
+
     def pay
       payInfo=params["commercial"]["com_payment"].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
       payInfo[:type]=payInfo.delete(:card_type)
@@ -160,6 +175,7 @@ class CommercialsController < ApplicationController
     def commercial_params
       #params.fetch(:commercial, {})
       params.require(:commercial).permit(
+        :page_num,
         :title,
         :description,
         :video,
