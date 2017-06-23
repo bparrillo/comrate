@@ -4,6 +4,7 @@ class CommercialsController < ApplicationController
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
   before_action :pay_params, only: [:create]
   before_action :page_default, only: [:index, :search, :my]
+  before_action :authorize, only: [:edit, :update, :destroy]
 
 
 
@@ -87,6 +88,12 @@ class CommercialsController < ApplicationController
   end
 
   private
+
+    def authorize
+      if @commercial.user != current_user
+        render json: {message: "unauthorized"}, status: 401
+      end
+    end
 
     def page_default
       if params[:page_num].nil?

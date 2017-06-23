@@ -1,4 +1,10 @@
-<h1>Editing Commercial</h1>
 <%= render partial: "shared/navbar" %>
+<h1>Edit Commercial</h1>
+
+Vote sum: <%= @commercial.total %>
+Total votes: <%= @commercial.votes.count %>
+
+
+
 <%= render 'form', commercial: @commercial %>
 
