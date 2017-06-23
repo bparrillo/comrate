@@ -18,3 +18,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= render :partial => "shared/page", locals: {com_count: @commercials.count, cur_path: lambda { |x| search_path( x.merge(search: @search))}} %>

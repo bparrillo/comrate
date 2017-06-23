@@ -1,5 +1,6 @@
-<p id="notice"><%= notice %></p>
 <%= render partial: "shared/navbar" %>
+<p id="notice"><%= notice %></p>
+
 
 <h1>Commercials</h1>
 
@@ -19,3 +20,6 @@
     <% end %>
   </tbody>
 </table>
+
+<%= render :partial => "shared/page", locals: {com_count: @commercials.count, cur_path: lambda { |x| commercials_path(x) }} %>
+
