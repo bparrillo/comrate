@@ -6,5 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Commercial.create(title: "Beer master", description: "2000")
-User.create(username: 'bob@bob.com', password: 'bob')
+bob=User.create(email: "1@1.1", password: 654321)
+(1..29).each { |x| Commercial.create(title: "9999#{x}", description: "2000",user: bob)}
+
