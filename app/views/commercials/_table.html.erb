@@ -1,0 +1,17 @@
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody class="btn-toolbar">
+    <% @commercials.each do |commercial| %>
+      <tr>
+        <td><%= link_to commercial.title, commercial, class: "btn btn-default" %></td>
+        <td><%= commercial.user==current_user ?  link_to('Edit', edit_commercial_path(commercial),  class: "btn btn-warning") : "" %></td>
+        <td><%= commercial.user==current_user ?  link_to('Destroy', commercial, method: :delete, data: { confirm: 'Are you sure?' },  class: "btn btn-danger") : ""%> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

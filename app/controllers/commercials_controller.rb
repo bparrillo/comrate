@@ -4,6 +4,10 @@ class CommercialsController < ApplicationController
   before_action :set_commercial, only: [:show, :edit, :update, :destroy]
   before_action :pay_params, only: [:create]
 
+  def my
+    @commercials = Commercial.where :user_id => current_user.id
+  end
+
   def index
     @commercials = Commercial.all
   end

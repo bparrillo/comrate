@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post 'commercials/:id/like', to: 'commercials#like'
   post 'commercials/:id/dislike', to: 'commercials#dislike'
   get 'search', to: 'commercials#search'
+  get 'my', to: 'commercials#my'
 
   root 'home#home'
 
